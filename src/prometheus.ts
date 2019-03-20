@@ -6,9 +6,9 @@ const counters: { [key: string]: Metrics.Counter } = {};
 const gauges: { [key: string]: Metrics.Gauge }     = {};
 
 interface Config {
-    dsnSecret: [string, string],
-    authSecret: [string, string],
-    db: number,
+    dsnSecret: [string, string];
+    authSecret: [string, string];
+    db: number;
 }
 
 const prometheus = {

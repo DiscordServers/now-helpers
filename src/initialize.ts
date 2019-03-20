@@ -22,12 +22,12 @@ interface Options {
     secretManager: {
         accessKeyId: string;
         secretAccessKey: string;
-    }
+    };
     redisConfig: {
         dsnSecret: [string, string];
         authSecret: [string, string];
         db: number;
-    }
+    };
 }
 
 export default (options: Options) => (handler: RequestHandler) => cors(async (req: Request, res: Response) => {
