@@ -13,7 +13,7 @@ import {initialize as initializeSecretary} from './getSecret';
 import prometheus from './prometheus';
 import Timer from './Timer';
 
-interface Options {
+export interface Options {
     route: string;
     metricNamespace: string;
     requireAuth?: boolean;
@@ -118,7 +118,7 @@ export interface Request extends IncomingMessage {
     query: { [key: string]: string | any };
 }
 
-interface UserInterface {
+export interface UserInterface {
     id: string;
     username: string;
     discriminator: string;
