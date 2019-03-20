@@ -32,10 +32,12 @@ export interface Options {
 
 export default (options: Options) => (handler: RequestHandler) => cors(async (req: Request, res: Response) => {
     await initializeSecretary(options.secretManager);
+
     if (options.sentryDsn) {
         Sentry.init({dsn: options.sentryDsn});
         Sentry.Handlers.requestHandler()(req, res, () => {});
     }
+
     for (const [header, value] of Object.entries(options.defaultHeaders || {})) {
         res.setHeader(header, value);
     }
