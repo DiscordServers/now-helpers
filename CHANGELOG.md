@@ -1,3 +1,12 @@
+## [1.0.4](https://github.com/DiscordServers/now-helpers/compare/v1.0.3...v1.0.4) (2019-03-20)
+
+
+### Bug Fixes
+
+* **Merge:** github.com:DiscordServers/now-helpers ([2f7f045](https://github.com/DiscordServers/now-helpers/commit/2f7f045))
+* **timeouts:** Updating timeouts ([a3c898b](https://github.com/DiscordServers/now-helpers/commit/a3c898b))
+* **timeouts:** Updating timeouts ([fe2fb52](https://github.com/DiscordServers/now-helpers/commit/fe2fb52))
+
 ## [1.0.3](https://github.com/DiscordServers/now-helpers/compare/v1.0.2...v1.0.3) (2019-03-20)
 
 
