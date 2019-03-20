@@ -17,6 +17,7 @@ export interface Options {
     route: string;
     metricNamespace: string;
     requireAuth?: boolean;
+    attemptAuth?: boolean;
     sentryDsn?: string;
     defaultHeaders?: { [key: string]: string };
     secretManager: {
@@ -53,7 +54,7 @@ export default (options: Options) => (handler: RequestHandler) => cors(async (re
     res.times = new Timer();
     res.times.start('full');
 
-    if (options.requireAuth && req.headers.cookie) {
+    if ((options.requireAuth || options.attemptAuth) && req.headers.cookie) {
         req.user = await rp({
             uri:     'https://auth.discordservers.com/info',
             method:  'get',
