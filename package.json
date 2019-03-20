@@ -3,6 +3,10 @@
     "description": "Helpers for the DiscordServers zeit functions",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc --project tsconfig.json",
+        "lint":  "tslint --config tslint.json --project tsconfig.json"
+    },
     "dependencies": {
         "@sentry/node": "^4.6.4",
         "async-prometheus-client": "^1.0.21",
