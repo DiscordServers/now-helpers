@@ -7,6 +7,23 @@
         "build": "tsc --project tsconfig.json",
         "lint": "tslint --config tslint.json --project tsconfig.json"
     },
+    "publishConfig": {
+        "access": "public"
+    },
+    "release":       {
+        "plugins": [
+            "@semantic-release/commit-analyzer",
+            "@semantic-release/release-notes-generator",
+            [
+                "@semantic-release/changelog",
+                {
+                    "changelogFile": "CHANGELOG.md"
+                }
+            ],
+            "@semantic-release/git",
+            "@semantic-release/npm"
+        ]
+    },
     "dependencies": {
         "@sentry/node": "^4.6.4",
         "async-prometheus-client": "^1.0.21",
