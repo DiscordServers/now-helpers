@@ -19,7 +19,7 @@ const prometheus = {
         console.log('Initializing Metrics.');
 
         registry                 = new Registry(new RedisAdapter({
-            connect_timeout: 1000,
+            connect_timeout: 5000,
             url:             await getSecret(config.dsnSecret[0], config.dsnSecret[1]),
             auth_pass:       await getSecret(config.authSecret[0], config.authSecret[1]),
             db:              config.db,

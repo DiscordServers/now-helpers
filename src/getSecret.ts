@@ -22,7 +22,7 @@ export async function initialize(initialConfigs: CredentialsOptions): Promise<vo
             credentials,
             region:      'us-east-1',
             httpOptions: {
-                timeout: 2000,
+                timeout: 3000,
             },
             cache:       {
                 enabled: true,
