@@ -1,5 +1,5 @@
 import {IncomingMessage, ServerResponse} from 'http';
-import {send} from 'micro';
+import {RequestHandler, send} from 'micro';
 
 const MAX_AGE       = 60 * 60 * 24;
 const ALLOW_METHODS = [
@@ -20,7 +20,7 @@ const ALLOW_HEADERS = [
     'Accept',
 ];
 
-export default (handler) => (req: IncomingMessage, res: ServerResponse, ...restArgs) => {
+export default (handler: RequestHandler) => (req: IncomingMessage, res: ServerResponse) => {
     res.setHeader('Access-Control-Allow-Origin', req.headers.origin || 'https://discordservers.com');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
 
@@ -33,5 +33,5 @@ export default (handler) => (req: IncomingMessage, res: ServerResponse, ...restA
         return send(res, 204);
     }
 
-    return handler(req, res, ...restArgs);
+    return handler(req, res);
 };

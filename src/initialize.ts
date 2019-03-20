@@ -62,10 +62,6 @@ export default (options: Options) => (handler: RequestHandler) => cors(async (re
         });
     }
 
-    if (options.requireAuth && !req.user) {
-        return res.send(403, {status: 'unauthorized'});
-    }
-
     res.send = async (statusCode: number, data: any, headers: { [key: string]: any } = {}) => {
         res.times.finish('full');
 
@@ -109,6 +105,10 @@ export default (options: Options) => (handler: RequestHandler) => cors(async (re
     };
 
     res.redirect = (location: string, statusCode: number = 301) => redirect(res, statusCode, location);
+
+    if (options.requireAuth === true && !req.user) {
+        return res.send(403, {status: 'unauthorized'});
+    }
 
     return handler(req, res);
 });
