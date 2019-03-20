@@ -1,3 +1,12 @@
+## [1.0.5](https://github.com/DiscordServers/now-helpers/compare/v1.0.4...v1.0.5) (2019-03-20)
+
+
+### Bug Fixes
+
+* **initialize:** Updating Auth ([8220d2e](https://github.com/DiscordServers/now-helpers/commit/8220d2e))
+* **initialize:** Updating Sentry ([a18adc6](https://github.com/DiscordServers/now-helpers/commit/a18adc6))
+* **Merge:** github.com:DiscordServers/now-helpers ([62dee09](https://github.com/DiscordServers/now-helpers/commit/62dee09))
+
 ## [1.0.4](https://github.com/DiscordServers/now-helpers/compare/v1.0.3...v1.0.4) (2019-03-20)
 
 
