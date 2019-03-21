@@ -3,7 +3,9 @@
     "compilerOptions": {
         "target":                       "es2017",
         "module":                       "commonjs",
-        "lib":                          ["es2017"],
+        "lib":                          [
+            "es2017"
+        ],
         "outDir":                       "dist/",
         "declaration":                  true,
         "esModuleInterop":              true,
@@ -11,5 +13,8 @@
         "noUnusedParameters":           true,
         "sourceMap":                    false,
         "allowSyntheticDefaultImports": true
-    }
+    },
+    "exclude":         [
+        "node_modules"
+    ]
 }
