@@ -1,16 +1,16 @@
 {
-    "name":            "@discordservers/now-helpers",
-    "description":     "Helpers for the DiscordServers zeit functions",
-    "main":            "dist/index.js",
-    "types":           "dist/index.d.ts",
-    "scripts":         {
+    "name": "@discordservers/now-helpers",
+    "description": "Helpers for the DiscordServers zeit functions",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
         "build": "tsc --project tsconfig.json",
-        "lint":  "tslint --config tslint.json --project tsconfig.json"
+        "lint": "tslint --config tslint.json --project tsconfig.json"
     },
-    "publishConfig":   {
+    "publishConfig": {
         "access": "public"
     },
-    "release":         {
+    "release": {
         "plugins": [
             "@semantic-release/commit-analyzer",
             "@semantic-release/release-notes-generator",
@@ -24,30 +24,30 @@
             "@semantic-release/npm"
         ]
     },
-    "dependencies":    {
-        "@sentry/node":            "^4.6.4",
+    "dependencies": {
+        "@sentry/node": "^4.6.4",
         "async-prometheus-client": "^1.0.21",
-        "micro":                   "^9.3.3",
-        "micro-cors":              "^0.1.1",
-        "micro-query":             "^0.3.0",
-        "micro-redirect":          "^1.0.0",
-        "redis":                   "^2.8.0",
-        "request":                 "^2.88.0",
-        "request-promise":         "^4.2.4",
-        "secretary-secrets":       "^4.0.0",
-        "source-map-support":      "^0.5.11"
+        "micro": "^9.3.3",
+        "micro-cors": "^0.1.1",
+        "micro-query": "^0.3.0",
+        "micro-redirect": "^1.0.0",
+        "redis": "^2.8.0",
+        "request": "^2.88.0",
+        "request-promise": "^4.2.4",
+        "secretary-secrets": "^4.0.0",
+        "source-map-support": "^0.5.11"
     },
     "devDependencies": {
-        "@types/micro":              "^7.3.3",
-        "@types/micro-cors":         "^0.1.0",
-        "@types/node":               "^11.11.4",
-        "@types/redis":              "^2.8.11",
-        "@types/request":            "^2.48.1",
-        "@types/request-promise":    "^4.1.42",
+        "@types/micro": "^7.3.3",
+        "@types/micro-cors": "^0.1.0",
+        "@types/node": "^11.11.4",
+        "@types/redis": "^2.8.11",
+        "@types/request": "^2.48.1",
+        "@types/request-promise": "^4.1.42",
         "@types/source-map-support": "^0.5.0",
-        "aws-sdk":                   "^2.425.0",
-        "node-vault":                "^0.9.6",
-        "tslint":                    "^5.14.0",
-        "typescript":                "^3.3.4000"
+        "aws-sdk": "^2.425.0",
+        "node-vault": "^0.9.6",
+        "tslint": "^5.14.0",
+        "typescript": "^3.3.4000"
     }
 }
