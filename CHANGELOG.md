@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/DiscordServers/now-helpers/compare/v1.0.6...v1.0.7) (2019-03-21)
+
+
+### Bug Fixes
+
+* **conflict:** Fixing conflict ([6dce9c8](https://github.com/DiscordServers/now-helpers/commit/6dce9c8))
+
 ## [1.0.6](https://github.com/DiscordServers/now-helpers/compare/v1.0.5...v1.0.6) (2019-03-21)
 
 
