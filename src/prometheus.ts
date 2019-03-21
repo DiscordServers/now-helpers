@@ -20,8 +20,8 @@ const prometheus = {
 
         registry                 = new Registry(new RedisAdapter({
             connect_timeout: 5000,
-            url:             await getSecret(config.dsnSecret[0], config.dsnSecret[1]),
-            auth_pass:       await getSecret(config.authSecret[0], config.authSecret[1]),
+            url:             await getSecret(...config.dsnSecret),
+            auth_pass:       await getSecret(...config.authSecret),
             db:              config.db,
         }));
         gauges.routeTiming       = registry.getOrRegisterGauge({
