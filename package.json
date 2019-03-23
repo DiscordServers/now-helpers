@@ -25,8 +25,8 @@
         ]
     },
     "dependencies": {
-        "@secretary/aws-secrets-manager": "^1.0.1-alpha.8",
-        "@secretary/core": "^1.0.1-alpha.6",
+        "@secretary/aws-secrets-manager": "^1.0.1-alpha.9",
+        "@secretary/core": "^1.0.1-alpha.9",
         "@sentry/node": "^4.6.5",
         "async-prometheus-client": "^1.0.21",
         "micro": "^9.3.3",
