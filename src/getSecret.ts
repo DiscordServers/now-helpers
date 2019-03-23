@@ -12,12 +12,12 @@ export default async (key: string, path: string): Promise<string> => {
     return secret.value;
 };
 
-export async function initialize(initialConfigs: CredentialsOptions | Promise<CredentialsOptions>): Promise<void> {
+export async function initialize(initialConfigs: CredentialsOptions): Promise<void> {
     if (manager) {
         return;
     }
 
-    credentials = await initialConfigs;
+    credentials = initialConfigs;
 
     console.log('Initializing Secretary');
     manager = new Secretary(
