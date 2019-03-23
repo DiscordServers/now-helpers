@@ -1,3 +1,10 @@
+## [1.0.10](https://github.com/DiscordServers/now-helpers/compare/v1.0.9...v1.0.10) (2019-03-23)
+
+
+### Bug Fixes
+
+* **initialize:** Awaiting configs ([5cfcf5a](https://github.com/DiscordServers/now-helpers/commit/5cfcf5a))
+
 ## [1.0.9](https://github.com/DiscordServers/now-helpers/compare/v1.0.8...v1.0.9) (2019-03-23)
 
 
