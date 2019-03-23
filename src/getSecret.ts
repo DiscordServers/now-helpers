@@ -2,8 +2,8 @@ import {Adapter, Secretary} from '@secretary/aws-secrets-manager';
 import {SecretsManager} from 'aws-sdk';
 import {CredentialsOptions} from 'aws-sdk/lib/credentials';
 
-let manager: Secretary<Adapter> = null;
-let credentials: CredentialsOptions              = null;
+let manager: Secretary<Adapter>     = null;
+let credentials: CredentialsOptions = null;
 
 export default async (key: string, path: string): Promise<string> => {
     await initialize(credentials);
@@ -25,7 +25,7 @@ export async function initialize(initialConfigs: CredentialsOptions): Promise<vo
                 credentials,
                 region:      'us-east-1',
                 httpOptions: {
-                    timeout: 3000,
+                    timeout: 2000,
                 },
             }),
             cache:  {
