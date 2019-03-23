@@ -1,3 +1,10 @@
+## [1.0.8](https://github.com/DiscordServers/now-helpers/compare/v1.0.7...v1.0.8) (2019-03-23)
+
+
+### Bug Fixes
+
+* **lint:** Lint fixes ([1c092a4](https://github.com/DiscordServers/now-helpers/commit/1c092a4))
+
 ## [1.0.7](https://github.com/DiscordServers/now-helpers/compare/v1.0.6...v1.0.7) (2019-03-21)
 
 
