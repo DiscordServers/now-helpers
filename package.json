@@ -25,7 +25,9 @@
         ]
     },
     "dependencies": {
-        "@sentry/node": "^4.6.4",
+        "@secretary/aws-secrets-manager": "^1.0.1-alpha.8",
+        "@secretary/core": "^1.0.1-alpha.6",
+        "@sentry/node": "^4.6.5",
         "async-prometheus-client": "^1.0.21",
         "micro": "^9.3.3",
         "micro-cors": "^0.1.1",
@@ -34,18 +36,17 @@
         "redis": "^2.8.0",
         "request": "^2.88.0",
         "request-promise": "^4.2.4",
-        "secretary-secrets": "^4.0.0",
         "source-map-support": "^0.5.11"
     },
     "devDependencies": {
         "@types/micro": "^7.3.3",
         "@types/micro-cors": "^0.1.0",
-        "@types/node": "^11.11.4",
+        "@types/node": "^11.11.6",
         "@types/redis": "^2.8.11",
         "@types/request": "^2.48.1",
         "@types/request-promise": "^4.1.42",
         "@types/source-map-support": "^0.5.0",
-        "aws-sdk": "^2.425.0",
+        "aws-sdk": "^2.427.0",
         "tslint": "^5.14.0",
         "typescript": "^3.3.4000"
     }

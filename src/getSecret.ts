@@ -1,14 +1,15 @@
+import {Adapter, Secretary} from '@secretary/aws-secrets-manager';
 import {SecretsManager} from 'aws-sdk';
 import {CredentialsOptions} from 'aws-sdk/lib/credentials';
-import {AWSSecretsManagerAdapter, Secretary} from 'secretary-secrets';
 
-let manager: Secretary<AWSSecretsManagerAdapter> = null;
+let manager: Secretary<Adapter> = null;
 let credentials: CredentialsOptions              = null;
 
 export default async (key: string, path: string): Promise<string> => {
     await initialize(credentials);
+    const secret = await manager.getSecret({key, path});
 
-    return manager.getSecret(key, path);
+    return secret.value;
 };
 
 export async function initialize(initialConfigs: CredentialsOptions): Promise<void> {
@@ -19,7 +20,7 @@ export async function initialize(initialConfigs: CredentialsOptions): Promise<vo
 
     console.log('Initializing Secretary');
     manager = new Secretary(
-        new AWSSecretsManagerAdapter({
+        new Adapter({
             client: new SecretsManager({
                 credentials,
                 region:      'us-east-1',
