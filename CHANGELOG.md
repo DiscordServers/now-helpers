@@ -1,3 +1,10 @@
+## [1.0.23](https://github.com/DiscordServers/now-helpers/compare/v1.0.22...v1.0.23) (2019-03-24)
+
+
+### Bug Fixes
+
+* **logs:** Removing logs ([c06950d](https://github.com/DiscordServers/now-helpers/commit/c06950d))
+
 ## [1.0.22](https://github.com/DiscordServers/now-helpers/compare/v1.0.21...v1.0.22) (2019-03-24)
 
 
