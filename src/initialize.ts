@@ -35,7 +35,6 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
     res: Response,
 ) => {
     const options: Options = await optionsPromise();
-    console.log({options});
 
     await initializeSecretary(options.secretManager);
 
