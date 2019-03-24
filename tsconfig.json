@@ -11,7 +11,7 @@
         "esModuleInterop":              true,
         "noUnusedLocals":               true,
         "noUnusedParameters":           true,
-        "sourceMap":                    false,
+        "sourceMap":                    true,
         "allowSyntheticDefaultImports": true
     },
     "exclude":         [

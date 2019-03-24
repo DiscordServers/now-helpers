@@ -1,6 +1,6 @@
 require('dotenv').config({path: '../../.env'});
 
-import Sentry from '@sentry/node';
+import * as Sentry from '@sentry/node';
 import {Registry} from 'async-prometheus-client';
 import {IncomingMessage, ServerResponse} from 'http';
 import {RequestHandler, send} from 'micro';
