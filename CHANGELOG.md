@@ -1,3 +1,10 @@
+## [1.0.19](https://github.com/DiscordServers/now-helpers/compare/v1.0.18...v1.0.19) (2019-03-24)
+
+
+### Bug Fixes
+
+* **deps:** Updating deps ([afb1a31](https://github.com/DiscordServers/now-helpers/commit/afb1a31))
+
 ## [1.0.18](https://github.com/DiscordServers/now-helpers/compare/v1.0.17...v1.0.18) (2019-03-24)
 
 
