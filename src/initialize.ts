@@ -69,6 +69,7 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
             uri:     'https://auth.discordservers.com/info',
             method:  'get',
             json:    true,
+            timeout: 5000,
             headers: {
                 cookie: req.headers.cookie,
             },
@@ -82,24 +83,20 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
             res.setHeader(key, value);
         }
 
-        try {
-            if (res.registry) {
-                await Promise.all([
-                    prometheus.counters[`routeStatus${statusCode}`].inc([res.route, process.env.AWS_REGION]),
-                    prometheus.counters.routeRequests.inc([res.route, process.env.AWS_REGION]),
-                    prometheus.gauges.routeMemory.set(
-                        process.memoryUsage().heapUsed,
-                        [res.route, process.env.AWS_REGION],
-                    ),
-                    prometheus.gauges.routeTiming.set(
-                        Date.now() - res.times.get('full').start,
-                        [res.route, process.env.AWS_REGION],
-                    ),
-                    prometheus.counters.refererRequests.inc([req.headers.referer, process.env.AWS_REGION]),
-                ]);
-            }
-        } catch (e) {
-            console.log('Error logging request to prometheus: ', e);
+        if (res.registry) {
+            Promise.all([
+                prometheus.counters[`routeStatus${statusCode}`].inc([res.route, process.env.AWS_REGION]),
+                prometheus.counters.routeRequests.inc([res.route, process.env.AWS_REGION]),
+                prometheus.gauges.routeMemory.set(
+                    process.memoryUsage().heapUsed,
+                    [res.route, process.env.AWS_REGION],
+                ),
+                prometheus.gauges.routeTiming.set(
+                    Date.now() - res.times.get('full').start,
+                    [res.route, process.env.AWS_REGION],
+                ),
+                prometheus.counters.refererRequests.inc([req.headers.referer, process.env.AWS_REGION]),
+            ]).catch((e) => console.log('Error logging request to prometheus: ', e));
         }
 
         if (typeof data === 'object' && req.query.profile) {
