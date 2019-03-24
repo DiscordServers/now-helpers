@@ -1,3 +1,10 @@
+## [1.0.22](https://github.com/DiscordServers/now-helpers/compare/v1.0.21...v1.0.22) (2019-03-24)
+
+
+### Bug Fixes
+
+* **initialize:** Rest Args ([57d343b](https://github.com/DiscordServers/now-helpers/commit/57d343b))
+
 ## [1.0.21](https://github.com/DiscordServers/now-helpers/compare/v1.0.20...v1.0.21) (2019-03-24)
 
 
