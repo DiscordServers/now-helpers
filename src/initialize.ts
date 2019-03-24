@@ -33,6 +33,7 @@ export interface Options {
 export default (optionsPromise: () => Options | Promise<Options>) => (handler: RequestHandler) => cors(async (
     req: Request,
     res: Response,
+    ...restArgs
 ) => {
     const options: Options = await optionsPromise();
 
@@ -122,7 +123,7 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
         return res.send(403, {status: 'unauthorized'});
     }
 
-    return handler(req, res);
+    return handler(req, res, ...restArgs);
 });
 
 export interface Request extends IncomingMessage {
