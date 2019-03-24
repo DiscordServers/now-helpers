@@ -1,3 +1,10 @@
+## [1.0.25](https://github.com/DiscordServers/now-helpers/compare/v1.0.24...v1.0.25) (2019-03-24)
+
+
+### Bug Fixes
+
+* **fix:** Fix ([45e6755](https://github.com/DiscordServers/now-helpers/commit/45e6755))
+
 ## [1.0.24](https://github.com/DiscordServers/now-helpers/compare/v1.0.23...v1.0.24) (2019-03-24)
 
 
