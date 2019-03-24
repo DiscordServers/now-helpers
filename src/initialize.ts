@@ -31,13 +31,21 @@ export interface Options {
     };
 }
 
+function getOptions(optionsPromise: Options | Promise<Options>): Promise<Options> {
+    return new Promise((resolve) => {
+        if (typeof optionsPromise['then'] !== 'function') {
+            return resolve(optionsPromise);
+        }
+
+        (optionsPromise as Promise<Options>).then(resolve);
+    });
+}
+
 export default (optionsPromise: Options | Promise<Options>) => (handler: RequestHandler) => cors(async (
     req: Request,
     res: Response,
 ) => {
-    const options: Options = typeof optionsPromise['then'] === 'function'
-                             ? await optionsPromise
-                             : optionsPromise as Options;
+    const options: Options = await getOptions(optionsPromise);
     console.log({options});
 
     await initializeSecretary(options.secretManager);
