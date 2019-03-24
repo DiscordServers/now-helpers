@@ -31,12 +31,14 @@ export interface Options {
     };
 }
 
-export default (optionsPromise: Options | Promise<Options>) => (handler: RequestHandler) => cors(async (
+type Opts = Options | (() => Options | Promise<Options>);
+
+export default (optionsPromise: Opts) => (handler: RequestHandler) => cors(async (
     req: Request,
     res: Response,
 ) => {
-    const options: Options = typeof optionsPromise['then'] === 'function'
-                             ? await optionsPromise
+    const options: Options = typeof optionsPromise === 'function'
+                             ? await optionsPromise()
                              : optionsPromise as Options;
 
     await initializeSecretary(options.secretManager);
