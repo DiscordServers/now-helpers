@@ -1,5 +1,5 @@
 import {Adapter, Secretary} from '@secretary/aws-secrets-manager';
-import {SecretsManager} from 'aws-sdk';
+import AWS, {SecretsManager} from 'aws-sdk';
 import {CredentialsOptions} from 'aws-sdk/lib/credentials';
 
 let manager: Secretary<Adapter>     = null;
@@ -19,7 +19,8 @@ export async function initialize(initialConfigs: CredentialsOptions): Promise<vo
 
     credentials = initialConfigs;
 
-    console.log('Initializing Secretary');
+    console.log('Initializing Secretary', credentials);
+    AWS.config.update({region: 'us-east-1', credentials});
     manager = new Secretary(
         new Adapter({
             client: new SecretsManager({
