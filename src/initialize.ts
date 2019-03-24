@@ -8,8 +8,7 @@ import parseQuery from 'micro-query';
 import redirect from 'micro-redirect';
 import rp from 'request-promise';
 import cors from './cors';
-
-import {initialize as initializeSecretary} from './getSecret';
+import getSecret, {initialize as initializeSecretary} from './getSecret';
 import prometheus from './prometheus';
 import Timer from './Timer';
 
@@ -18,7 +17,7 @@ export interface Options {
     metricNamespace: string;
     requireAuth?: boolean;
     attemptAuth?: boolean;
-    sentryDsn?: string;
+    sentryDsn?: string | string[];
     defaultHeaders?: { [key: string]: string };
     secretManager: {
         accessKeyId: string;
@@ -41,7 +40,11 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
     await initializeSecretary(options.secretManager);
 
     if (options.sentryDsn) {
-        Sentry.init({dsn: options.sentryDsn});
+        Sentry.init({
+            dsn: Array.isArray(options.sentryDsn)
+                 ? await getSecret(options.sentryDsn[0], options.sentryDsn[1])
+                 : options.sentryDsn,
+        });
         Sentry.Handlers.requestHandler()(req, res, () => {
         });
     }
