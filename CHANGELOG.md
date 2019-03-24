@@ -1,3 +1,10 @@
+## [1.0.21](https://github.com/DiscordServers/now-helpers/compare/v1.0.20...v1.0.21) (2019-03-24)
+
+
+### Bug Fixes
+
+* **deps:** Updating deps ([f57f4ed](https://github.com/DiscordServers/now-helpers/commit/f57f4ed))
+
 ## [1.0.20](https://github.com/DiscordServers/now-helpers/compare/v1.0.19...v1.0.20) (2019-03-24)
 
 
