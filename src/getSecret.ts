@@ -39,4 +39,5 @@ export async function initialize(initialConfigs: CredentialsOptions): Promise<vo
             },
         }),
     );
+    console.log('Secretary initialized');
 }

@@ -57,6 +57,8 @@ const prometheus = {
             });
         }
 
+        console.log('Metrics initialized');
+
         return registry;
     },
     gauges,
