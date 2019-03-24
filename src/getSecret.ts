@@ -24,7 +24,7 @@ export async function initialize(initialConfigs: CredentialsOptions): Promise<vo
 
     credentials = initialConfigs;
 
-    console.log('Initializing Secretary', credentials);
+    console.log('Initializing Secretary');
     manager = new Secretary(
         new Adapter({
             client: new SecretsManager({
