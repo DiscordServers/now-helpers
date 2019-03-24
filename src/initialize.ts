@@ -35,8 +35,8 @@ export default (optionsPromise: Options | Promise<Options>) => (handler: Request
     req: Request,
     res: Response,
 ) => {
-    const options: Options = typeof optionsPromise === 'function'
-                             ? await Promise.resolve(optionsPromise)
+    const options: Options = typeof optionsPromise['then'] === 'function'
+                             ? await optionsPromise
                              : optionsPromise as Options;
     console.log({options});
 
