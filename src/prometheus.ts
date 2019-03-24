@@ -1,13 +1,13 @@
 import {Metrics, RedisAdapter, Registry} from 'async-prometheus-client';
-import getSecret from './getSecret';
+import getSecret, {Secret} from './getSecret';
 
 let registry: Registry | null                      = null;
 const counters: { [key: string]: Metrics.Counter } = {};
 const gauges: { [key: string]: Metrics.Gauge }     = {};
 
 interface Config {
-    dsnSecret: [string, string];
-    authSecret: [string, string];
+    dsnSecret: Secret;
+    authSecret: Secret;
     db: number;
 }
 
@@ -20,8 +20,8 @@ const prometheus = {
 
         registry                 = new Registry(new RedisAdapter({
             connect_timeout: 5000,
-            url:             await getSecret(...config.dsnSecret),
-            auth_pass:       await getSecret(...config.authSecret),
+            url:             await getSecret(config.dsnSecret),
+            auth_pass:       await getSecret(config.authSecret),
             db:              config.db,
         }));
         gauges.routeTiming       = registry.getOrRegisterGauge({
