@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/DiscordServers/now-helpers/compare/v1.1.0...v1.1.1) (2019-03-25)
+
+
+### Bug Fixes
+
+* **fix:** Sending timers with the response ([7d4b3f8](https://github.com/DiscordServers/now-helpers/commit/7d4b3f8))
+
 # [1.1.0](https://github.com/DiscordServers/now-helpers/compare/v1.0.27...v1.1.0) (2019-03-25)
 
 
