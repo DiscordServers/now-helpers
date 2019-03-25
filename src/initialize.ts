@@ -29,6 +29,7 @@ export interface Options {
         authSecret: Secret;
         db: number;
     };
+    callback?: (req: Request, res: Response, handler: RequestHandler, ...restArgs) => Promise<void> | void;
 }
 
 export default (optionsPromise: () => Options | Promise<Options>) => (handler: RequestHandler) => cors(async (
@@ -102,7 +103,7 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
                             Date.now() - res.times.get('full').start,
                             [res.route, process.env.AWS_REGION],
                         ),
-                        prometheus.counters.refererRequests.inc([req.headers.referer, process.env.AWS_REGION]),
+                        // prometheus.counters.refererRequests.inc([req.headers.referer, process.env.AWS_REGION]),
                     ]).catch((e) => console.log('Error logging request to prometheus: ', e));
                 },
                 10,
@@ -128,6 +129,10 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
 
     if (options.requireAuth === true && !req.user) {
         return res.send(403, {status: 'unauthorized'});
+    }
+
+    if (typeof options.callback === 'function') {
+        await options.callback(req, res, handler, ...restArgs);
     }
 
     return handler(req, res, ...restArgs);
