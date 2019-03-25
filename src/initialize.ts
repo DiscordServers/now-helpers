@@ -19,6 +19,7 @@ export interface Options {
     attemptAuth?: boolean;
     sentryDsn?: string | Secret;
     defaultHeaders?: { [key: string]: string };
+    registryCallback?: (registry: Registry) => Promise<void>;
     secretManager: {
         accessKeyId: string;
         secretAccessKey: string;
@@ -54,7 +55,11 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
     }
 
     try {
-        res.registry = await prometheus.initializeMetrics(options.metricNamespace, options.redisConfig);
+        res.registry = await prometheus.initializeMetrics(
+            options.metricNamespace,
+            options.redisConfig,
+            options.registryCallback,
+        );
     } catch (e) {
         console.error('Error initializing metrics: ', e);
     }
@@ -98,7 +103,7 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
                     ),
                     prometheus.counters.refererRequests.inc([req.headers.referer, process.env.AWS_REGION]),
                 ]).catch((e) => console.log('Error logging request to prometheus: ', e));
-            },         10);
+            }, 10);
         }
 
         if (typeof data === 'object' && req.query.profile) {

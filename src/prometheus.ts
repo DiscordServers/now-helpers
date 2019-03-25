@@ -12,7 +12,7 @@ interface Config {
 }
 
 const prometheus = {
-    initializeMetrics: async (namespace: string, config: Config) => {
+    initializeMetrics: async (namespace: string, config: Config, callback?: (Registry) => Promise<void>) => {
         if (registry) {
             return registry;
         }
@@ -55,6 +55,10 @@ const prometheus = {
                 help:   `The number of ${status} statuses for a route`,
                 labels: ['route', 'region'],
             });
+        }
+
+        if (typeof callback === 'function') {
+            await callback(registry);
         }
 
         console.log('Metrics initialized');
