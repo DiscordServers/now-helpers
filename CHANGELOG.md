@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/DiscordServers/now-helpers/compare/v1.0.27...v1.1.0) (2019-03-25)
+
+
+### Features
+
+* **initialize:** Adding callback ([7db0e97](https://github.com/DiscordServers/now-helpers/commit/7db0e97))
+
 ## [1.0.27](https://github.com/DiscordServers/now-helpers/compare/v1.0.26...v1.0.27) (2019-03-25)
 
 
