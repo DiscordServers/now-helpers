@@ -1,3 +1,11 @@
+## [1.0.27](https://github.com/DiscordServers/now-helpers/compare/v1.0.26...v1.0.27) (2019-03-25)
+
+
+### Bug Fixes
+
+* **fix:** Fix ([bf022e3](https://github.com/DiscordServers/now-helpers/commit/bf022e3))
+* **Merge:** branch 'master' of github.com:DiscordServers/now-helpers ([da33384](https://github.com/DiscordServers/now-helpers/commit/da33384))
+
 ## [1.0.26](https://github.com/DiscordServers/now-helpers/compare/v1.0.25...v1.0.26) (2019-03-24)
 
 
