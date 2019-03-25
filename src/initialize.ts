@@ -89,21 +89,24 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
         }
 
         if (res.registry) {
-            setTimeout(() => {
-                Promise.all([
-                    prometheus.counters[`routeStatus${statusCode}`].inc([res.route, process.env.AWS_REGION]),
-                    prometheus.counters.routeRequests.inc([res.route, process.env.AWS_REGION]),
-                    prometheus.gauges.routeMemory.set(
-                        process.memoryUsage().heapUsed,
-                        [res.route, process.env.AWS_REGION],
-                    ),
-                    prometheus.gauges.routeTiming.set(
-                        Date.now() - res.times.get('full').start,
-                        [res.route, process.env.AWS_REGION],
-                    ),
-                    prometheus.counters.refererRequests.inc([req.headers.referer, process.env.AWS_REGION]),
-                ]).catch((e) => console.log('Error logging request to prometheus: ', e));
-            }, 10);
+            setTimeout(
+                () => {
+                    Promise.all([
+                        prometheus.counters[`routeStatus${statusCode}`].inc([res.route, process.env.AWS_REGION]),
+                        prometheus.counters.routeRequests.inc([res.route, process.env.AWS_REGION]),
+                        prometheus.gauges.routeMemory.set(
+                            process.memoryUsage().heapUsed,
+                            [res.route, process.env.AWS_REGION],
+                        ),
+                        prometheus.gauges.routeTiming.set(
+                            Date.now() - res.times.get('full').start,
+                            [res.route, process.env.AWS_REGION],
+                        ),
+                        prometheus.counters.refererRequests.inc([req.headers.referer, process.env.AWS_REGION]),
+                    ]).catch((e) => console.log('Error logging request to prometheus: ', e));
+                },
+                10,
+            );
         }
 
         if (typeof data === 'object' && req.query.profile) {
