@@ -6,6 +6,7 @@ import {IncomingMessage, ServerResponse} from 'http';
 import {RequestHandler, send} from 'micro';
 import parseQuery from 'micro-query';
 import redirect from 'micro-redirect';
+import {Pushgateway} from 'prom-client';
 import rp from 'request-promise';
 import cors from './cors';
 import getSecret, {initialize as initializeSecretary, Secret} from './getSecret';
@@ -28,6 +29,11 @@ export interface Options {
         dsnSecret: Secret;
         authSecret: Secret;
         db: number;
+    };
+    pushGateway: {
+        clientId: Secret;
+        clientSecret: Secret;
+        url: Secret;
     };
     callback?: (req: Request, res: Response, handler: RequestHandler, ...restArgs) => Promise<void> | void;
 }
@@ -56,9 +62,9 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
     }
 
     try {
-        res.registry = await prometheus.initializeMetrics(
+        res.gateway = await prometheus.initializeMetrics(
             options.metricNamespace,
-            options.redisConfig,
+            options.pushGateway,
             options.registryCallback,
         );
     } catch (e) {
@@ -83,33 +89,53 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
     }
 
     res.send = async (statusCode: number, data: any, headers: { [key: string]: any } = {}) => {
-        res.times.finish('full');
+        return new Promise((resolve) => {
+            res.times.finish('full');
 
-        for (const [key, value] of Object.entries(headers)) {
-            res.setHeader(key, value);
-        }
+            for (const [key, value] of Object.entries(headers)) {
+                res.setHeader(key, value);
+            }
 
-        if (res.registry) {
-            Promise.all([
-                prometheus.counters[`routeStatus${statusCode}`].inc([res.route, process.env.AWS_REGION]),
-                prometheus.counters.routeRequests.inc([res.route, process.env.AWS_REGION]),
+            if (typeof data === 'object' && req.query.profile) {
+                data.times = res.times;
+            }
+
+            resolve(send(res, statusCode, data));
+
+            if (res.gateway) {
+                prometheus.counters[`routeStatus${statusCode}`].inc({
+                    route : res.route,
+                    region: process.env.AWS_REGION,
+                });
+                prometheus.counters.routeRequests.inc({
+                    route : res.route,
+                    region: process.env.AWS_REGION,
+                });
                 prometheus.gauges.routeMemory.set(
+                    {
+                        route : res.route,
+                        region: process.env.AWS_REGION,
+                    },
                     process.memoryUsage().heapUsed,
-                    [res.route, process.env.AWS_REGION],
-                ),
+                );
                 prometheus.gauges.routeTiming.set(
+                    {
+                        route : res.route,
+                        region: process.env.AWS_REGION,
+                    },
                     Date.now() - res.times.get('full').start,
-                    [res.route, process.env.AWS_REGION],
-                ),
-                // prometheus.counters.refererRequests.inc([req.headers.referer, process.env.AWS_REGION]),
-            ]).catch((e) => console.log('Error logging request to prometheus: ', e));
-        }
+                );
 
-        if (typeof data === 'object' && req.query.profile) {
-            data.times = res.times;
-        }
+                res.gateway.push({jobName: 'now-helpers'}, (err, _res, body) => {
+                    if (err) {
+                        console.error(`An error has occurred while pushing to prometheus:`, err);
+                        console.error(body);
+                    }
 
-        return send(res, statusCode, data);
+                    console.log('Pushgateway body', body)
+                });
+            }
+        });
     };
 
     res.error = (error: any, data: any = null, statusCode: number = 500, headers = {}) => {
@@ -148,6 +174,7 @@ export interface UserInterface {
 }
 
 export interface Response extends ServerResponse {
+    gateway: Pushgateway;
     registry: Registry;
     route: string;
     times: Timer;
