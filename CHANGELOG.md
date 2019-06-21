@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/DiscordServers/now-helpers/compare/v1.2.0...v2.0.0) (2019-06-21)
+
+
+### Features
+
+* **tracking:** Added pushgateway ([8f0fc84](https://github.com/DiscordServers/now-helpers/commit/8f0fc84))
+
+
+### BREAKING CHANGES
+
+* **tracking:** Removed async-prometheus-client and replaced it with prom-client
+
 # [1.2.0](https://github.com/DiscordServers/now-helpers/compare/v1.1.1...v1.2.0) (2019-06-21)
 
 
