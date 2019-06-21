@@ -1,73 +1,71 @@
-import {Metrics, RedisAdapter, Registry} from 'async-prometheus-client';
-import getSecret, {Secret} from './getSecret';
+import {Counter, Gauge, Pushgateway, register} from 'prom-client';
+import getSecret from './getSecret';
+import { Options } from './initialize';
 
-let registry: Registry | null                      = null;
-const counters: { [key: string]: Metrics.Counter } = {};
-const gauges: { [key: string]: Metrics.Gauge }     = {};
+let   gateway: Pushgateway | null          = null;
+const counters: { [key: string]: Counter } = {};
+const gauges: { [key: string]: Gauge }     = {};
 
-interface Config {
-    dsnSecret: Secret;
-    authSecret: Secret;
-    db: number;
-}
+type pushConfigType = Options['pushGateway'];
 
 const prometheus = {
-    initializeMetrics: async (namespace: string, config: Config, callback?: (Registry) => Promise<void>) => {
-        if (registry) {
-            return registry;
+    // tslint:disable-next-line:max-line-length
+    initializeMetrics: async (_namespace: string, pushConfig: pushConfigType, callback?: (Registry) => Promise<void>) => {
+        if (gateway) {
+            return gateway;
         }
         console.log('Initializing Metrics.');
 
-        registry                 = new Registry(new RedisAdapter({
-            connect_timeout: 5000,
-            url:             await getSecret(config.dsnSecret),
-            auth_pass:       await getSecret(config.authSecret),
-            db:              config.db,
-        }));
-        gauges.routeTiming       = registry.getOrRegisterGauge({
-            namespace,
-            name:   'route_timing',
-            help:   'The time it takes to run a route',
-            labels: ['route', 'region'],
+        gateway = new Pushgateway(await getSecret(pushConfig.url), {
+            headers: {
+                'CF-Access-Client-ID'    : await getSecret(pushConfig.clientId),
+                'CF-Access-Client-Secret': await getSecret(pushConfig.clientSecret),
+            },
         });
-        gauges.routeMemory       = registry.getOrRegisterGauge({
-            namespace,
-            name:   'route_memory',
-            help:   'The request memory per route in bytes',
-            labels: ['route', 'region'],
+
+        gauges.routeTiming       = new Gauge({
+            name      : 'route_timing',
+            help      : 'The time it takes to run a route',
+            labelNames: ['route', 'region'],
         });
-        counters.routeRequests   = registry.getOrRegisterCounter({
-            namespace,
-            name:   'route_requests',
-            help:   'The number of requests for a route',
-            labels: ['route', 'region'],
+        gauges.routeMemory       = new Gauge({
+            name      : 'route_memory',
+            help      : 'The request memory per route in bytes',
+            labelNames: ['route', 'region'],
         });
-        counters.refererRequests = registry.getOrRegisterCounter({
-            namespace,
-            name:   'referer_requests',
-            help:   'The number of requests from a referer',
-            labels: ['referer', 'region'],
+        counters.routeRequests   = new Counter({
+            name      : 'route_requests',
+            help      : 'The number of requests for a route',
+            labelNames: ['route', 'region'],
+        });
+        counters.refererRequests = new Counter({
+            name      : 'referer_requests',
+            help      : 'The number of requests from a referer',
+            labelNames: ['referer', 'region'],
         });
         for (const status of [200, 204, 400, 401, 403, 404, 500]) {
-            counters[`routeStatus${status}`] = registry.getOrRegisterCounter({
-                namespace,
-                name:   'route_status_' + status,
-                help:   `The number of ${status} statuses for a route`,
-                labels: ['route', 'region'],
+            counters[`routeStatus${status}`] = new Counter({
+                name      : 'route_status_' + status,
+                help      : `The number of ${status} statuses for a route`,
+                labelNames: ['route', 'region'],
             });
         }
 
         if (typeof callback === 'function') {
-            await callback(registry);
+            await callback(gateway);
         }
+
+        register.setDefaultLabels({
+            instance: _namespace,
+        });
 
         console.log('Metrics initialized');
 
-        return registry;
+        return gateway;
     },
     gauges,
     counters,
-    registry,
+    gateway,
 };
 
 export default prometheus;
