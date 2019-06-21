@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/DiscordServers/now-helpers/compare/v1.1.1...v1.2.0) (2019-06-21)
+
+
+### Features
+
+* **tracking:** BREAKING CHANGE - Replaced async-prom-client with PushGateway ([e352f60](https://github.com/DiscordServers/now-helpers/commit/e352f60))
+
 ## [1.1.1](https://github.com/DiscordServers/now-helpers/compare/v1.1.0...v1.1.1) (2019-03-25)
 
 
