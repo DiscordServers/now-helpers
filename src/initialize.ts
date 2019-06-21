@@ -71,7 +71,7 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
         console.error('Error initializing metrics: ', e);
     }
 
-    res.clientIP        = getClientIp(req);
+    res.clientIP        = req.headers['cf-connecting-ip'] as string || getClientIp(req);
     res.metricNamespace = options.metricNamespace;
     req.query           = parseQuery(req);
     res.route           = options.route;
