@@ -14,7 +14,7 @@ const prometheus = {
         if (gateway) {
             return gateway;
         }
-        console.log('Initializing Metrics.');
+        console.log('Initializing Metrics5.');
 
         gateway = new Pushgateway(await getSecret(pushConfig.url), {
             headers: {

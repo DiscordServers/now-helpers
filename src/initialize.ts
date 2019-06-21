@@ -125,7 +125,6 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
                     },
                     Date.now() - res.times.get('full').start,
                 );
-                console.log('Sending metrics..');
                 res.gateway.pushAdd({jobName: `now-helpers-${res.metricNamespace}`}, (err, gatewayRes, body) => {
                     if (err) {
                         console.error(`An error has occurred while pushing to prometheus:`, err);
