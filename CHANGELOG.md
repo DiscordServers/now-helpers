@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/DiscordServers/now-helpers/compare/v2.1.0...v2.1.1) (2019-06-21)
+
+
+### Bug Fixes
+
+* **tracking:** Gave cf ip header more priority ([0f811ce](https://github.com/DiscordServers/now-helpers/commit/0f811ce))
+
 # [2.1.0](https://github.com/DiscordServers/now-helpers/compare/v2.0.1...v2.1.0) (2019-06-21)
 
 
