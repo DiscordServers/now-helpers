@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/DiscordServers/now-helpers/compare/v2.0.0...v2.0.1) (2019-06-21)
+
+
+### Bug Fixes
+
+* **logging:** Fixed typo ([ad36adb](https://github.com/DiscordServers/now-helpers/commit/ad36adb))
+
 # [2.0.0](https://github.com/DiscordServers/now-helpers/compare/v1.2.0...v2.0.0) (2019-06-21)
 
 
