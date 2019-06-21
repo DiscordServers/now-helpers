@@ -1,3 +1,15 @@
+# [2.1.0](https://github.com/DiscordServers/now-helpers/compare/v2.0.1...v2.1.0) (2019-06-21)
+
+
+### Bug Fixes
+
+* **deps:** Updated js-yaml because vuln ([652d33a](https://github.com/DiscordServers/now-helpers/commit/652d33a))
+
+
+### Features
+
+* **tracking:** Added logging per client ip ([1ee842d](https://github.com/DiscordServers/now-helpers/commit/1ee842d))
+
 ## [2.0.1](https://github.com/DiscordServers/now-helpers/compare/v2.0.0...v2.0.1) (2019-06-21)
 
 
