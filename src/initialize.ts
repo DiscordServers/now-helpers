@@ -1,11 +1,11 @@
 require('dotenv').config({path: '../../.env'});
 
 import * as Sentry from '@sentry/node';
-import {Registry} from 'async-prometheus-client';
 import {IncomingMessage, ServerResponse} from 'http';
 import {RequestHandler, send} from 'micro';
 import parseQuery from 'micro-query';
 import redirect from 'micro-redirect';
+import {Pushgateway} from 'prom-client';
 import rp from 'request-promise';
 import cors from './cors';
 import getSecret, {initialize as initializeSecretary, Secret} from './getSecret';
@@ -19,7 +19,7 @@ export interface Options {
     attemptAuth?: boolean;
     sentryDsn?: string | Secret;
     defaultHeaders?: { [key: string]: string };
-    registryCallback?: (registry: Registry) => Promise<void>;
+    metricsCallback?: () => Promise<void>;
     secretManager: {
         accessKeyId: string;
         secretAccessKey: string;
@@ -29,6 +29,12 @@ export interface Options {
         authSecret: Secret;
         db: number;
     };
+    pushGateway: {
+        clientId: Secret;
+        clientSecret: Secret;
+        url: Secret;
+    };
+    callback?: (req: Request, res: Response, handler: RequestHandler, ...restArgs) => Promise<void> | void;
 }
 
 export default (optionsPromise: () => Options | Promise<Options>) => (handler: RequestHandler) => cors(async (
@@ -55,18 +61,19 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
     }
 
     try {
-        res.registry = await prometheus.initializeMetrics(
+        res.gateway = await prometheus.initializeMetrics(
             options.metricNamespace,
-            options.redisConfig,
-            options.registryCallback,
+            options.pushGateway,
+            options.metricsCallback,
         );
     } catch (e) {
         console.error('Error initializing metrics: ', e);
     }
 
-    req.query = parseQuery(req);
-    res.route = options.route;
-    res.times = new Timer();
+    res.metricNamespace = options.metricNamespace;
+    req.query           = parseQuery(req);
+    res.route           = options.route;
+    res.times           = new Timer();
     res.times.start('full');
 
     if ((options.requireAuth || options.attemptAuth) && req.headers.cookie) {
@@ -82,38 +89,50 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
     }
 
     res.send = async (statusCode: number, data: any, headers: { [key: string]: any } = {}) => {
-        res.times.finish('full');
+        return new Promise((resolve) => {
+            res.times.finish('full');
 
-        for (const [key, value] of Object.entries(headers)) {
-            res.setHeader(key, value);
-        }
+            for (const [key, value] of Object.entries(headers)) {
+                res.setHeader(key, value);
+            }
 
-        if (res.registry) {
-            setTimeout(
-                () => {
-                    Promise.all([
-                        prometheus.counters[`routeStatus${statusCode}`].inc([res.route, process.env.AWS_REGION]),
-                        prometheus.counters.routeRequests.inc([res.route, process.env.AWS_REGION]),
-                        prometheus.gauges.routeMemory.set(
-                            process.memoryUsage().heapUsed,
-                            [res.route, process.env.AWS_REGION],
-                        ),
-                        prometheus.gauges.routeTiming.set(
-                            Date.now() - res.times.get('full').start,
-                            [res.route, process.env.AWS_REGION],
-                        ),
-                        prometheus.counters.refererRequests.inc([req.headers.referer, process.env.AWS_REGION]),
-                    ]).catch((e) => console.log('Error logging request to prometheus: ', e));
-                },
-                10,
-            );
-        }
+            if (typeof data === 'object' && req.query.profile) {
+                data.times = res.times;
+            }
 
-        if (typeof data === 'object' && req.query.profile) {
-            data.times = res.times;
-        }
+            resolve(send(res, statusCode, data));
 
-        return send(res, statusCode, data);
+            if (res.gateway) {
+                prometheus.counters[`routeStatus${statusCode}`].inc({
+                    route : res.route,
+                    region: process.env.AWS_REGION,
+                });
+                prometheus.counters.routeRequests.inc({
+                    route : res.route,
+                    region: process.env.AWS_REGION,
+                });
+                prometheus.gauges.routeMemory.set(
+                    {
+                        route : res.route,
+                        region: process.env.AWS_REGION,
+                    },
+                    process.memoryUsage().heapUsed,
+                );
+                prometheus.gauges.routeTiming.set(
+                    {
+                        route : res.route,
+                        region: process.env.AWS_REGION,
+                    },
+                    Date.now() - res.times.get('full').start,
+                );
+                res.gateway.pushAdd({jobName: `now-helpers-${res.metricNamespace}`}, (err, gatewayRes, body) => {
+                    if (err) {
+                        console.error(`An error has occurred while pushing to prometheus:`, err);
+                        console.error(gatewayRes, body);
+                    }
+                });
+            }
+        });
     };
 
     res.error = (error: any, data: any = null, statusCode: number = 500, headers = {}) => {
@@ -128,6 +147,10 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
 
     if (options.requireAuth === true && !req.user) {
         return res.send(403, {status: 'unauthorized'});
+    }
+
+    if (typeof options.callback === 'function') {
+        await options.callback(req, res, handler, ...restArgs);
     }
 
     return handler(req, res, ...restArgs);
@@ -148,7 +171,8 @@ export interface UserInterface {
 }
 
 export interface Response extends ServerResponse {
-    registry: Registry;
+    gateway: Pushgateway;
+    metricNamespace: string;
     route: string;
     times: Timer;
     redirect: (location: string, statusCode?: number) => Promise<void>;

@@ -1,3 +1,24 @@
+# [1.2.0](https://github.com/DiscordServers/now-helpers/compare/v1.1.1...v1.2.0) (2019-06-21)
+
+
+### Features
+
+* **tracking:** BREAKING CHANGE - Replaced async-prom-client with PushGateway ([e352f60](https://github.com/DiscordServers/now-helpers/commit/e352f60))
+
+## [1.1.1](https://github.com/DiscordServers/now-helpers/compare/v1.1.0...v1.1.1) (2019-03-25)
+
+
+### Bug Fixes
+
+* **fix:** Sending timers with the response ([7d4b3f8](https://github.com/DiscordServers/now-helpers/commit/7d4b3f8))
+
+# [1.1.0](https://github.com/DiscordServers/now-helpers/compare/v1.0.27...v1.1.0) (2019-03-25)
+
+
+### Features
+
+* **initialize:** Adding callback ([7db0e97](https://github.com/DiscordServers/now-helpers/commit/7db0e97))
+
 ## [1.0.27](https://github.com/DiscordServers/now-helpers/compare/v1.0.26...v1.0.27) (2019-03-25)
 
 
