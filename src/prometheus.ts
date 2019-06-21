@@ -43,6 +43,11 @@ const prometheus = {
             help      : 'The number of requests from a referer',
             labelNames: ['referer', 'region'],
         });
+        counters.clientIPs = new Counter({
+            name      : 'client_ips',
+            help      : 'The number of requests per client ip',
+            labelNames: ['ip', 'route'],
+        });
         for (const status of [200, 204, 400, 401, 403, 404, 500]) {
             counters[`routeStatus${status}`] = new Counter({
                 name      : 'route_status_' + status,

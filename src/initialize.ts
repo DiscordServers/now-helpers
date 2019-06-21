@@ -6,6 +6,7 @@ import {RequestHandler, send} from 'micro';
 import parseQuery from 'micro-query';
 import redirect from 'micro-redirect';
 import {Pushgateway} from 'prom-client';
+import { getClientIp } from 'request-ip';
 import rp from 'request-promise';
 import cors from './cors';
 import getSecret, {initialize as initializeSecretary, Secret} from './getSecret';
@@ -70,6 +71,7 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
         console.error('Error initializing metrics: ', e);
     }
 
+    res.clientIP        = getClientIp(req);
     res.metricNamespace = options.metricNamespace;
     req.query           = parseQuery(req);
     res.route           = options.route;
@@ -125,6 +127,10 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
                     },
                     Date.now() - res.times.get('full').start,
                 );
+                prometheus.counters.clientIPs.inc({
+                    ip   : res.clientIP,
+                    route: res.route,
+                });
                 res.gateway.pushAdd({jobName: `now-helpers-${res.metricNamespace}`}, (err, gatewayRes, body) => {
                     if (err) {
                         console.error(`An error has occurred while pushing to prometheus:`, err);
@@ -171,6 +177,7 @@ export interface UserInterface {
 }
 
 export interface Response extends ServerResponse {
+    clientIP: string;
     gateway: Pushgateway;
     metricNamespace: string;
     route: string;
