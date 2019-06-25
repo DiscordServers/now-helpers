@@ -4,7 +4,8 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "build": "tsc --project tsconfig.json",
+        "publish-dev": "rm dist/* && npm run build && npm publish . --tag dev",
+        "build": "tsc --project tsconfig.json && ts-node tools/after-build.ts",
         "lint": "tslint --config tslint.json --project tsconfig.json"
     },
     "publishConfig": {
@@ -29,6 +30,7 @@
         "@secretary/core": "^1.0.1-alpha.9",
         "@sentry/node": "^4.6.5",
         "dotenv": "^8.0.0",
+        "ip-range-check": "^0.2.0",
         "micro": "^9.3.3",
         "micro-cors": "^0.1.1",
         "micro-query": "^0.3.0",
@@ -50,6 +52,8 @@
         "@types/request-promise": "^4.1.42",
         "@types/source-map-support": "^0.5.0",
         "aws-sdk": "^2.427.0",
+        "axios": "^0.19.0",
+        "ts-node": "^8.3.0",
         "tslint": "^5.14.0",
         "typescript": "^3.3.4000"
     }

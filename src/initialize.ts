@@ -2,12 +2,14 @@ require('dotenv').config({path: '../../.env'});
 
 import * as Sentry from '@sentry/node';
 import {IncomingMessage, ServerResponse} from 'http';
+import ipRangeCheck from 'ip-range-check';
 import {RequestHandler, send} from 'micro';
 import parseQuery from 'micro-query';
 import redirect from 'micro-redirect';
 import {Pushgateway} from 'prom-client';
 import { getClientIp } from 'request-ip';
 import rp from 'request-promise';
+import cfRanges from './cf-ranges.json';
 import cors from './cors';
 import getSecret, {initialize as initializeSecretary, Secret} from './getSecret';
 import prometheus from './prometheus';
@@ -16,6 +18,7 @@ import Timer from './Timer';
 export interface Options {
     route: string;
     metricNamespace: string;
+    cfVerify?: boolean;
     requireAuth?: boolean;
     attemptAuth?: boolean;
     sentryDsn?: string | Secret;
@@ -44,6 +47,22 @@ export default (optionsPromise: () => Options | Promise<Options>) => (handler: R
     ...restArgs
 ) => {
     const options: Options = await optionsPromise();
+
+    res.originalIP      = req.headers['x-zeit-co-forwarded-for'] as string;
+
+    // Cloudflare check
+    if (options.cfVerify) {
+        const proxiedByCF = ipRangeCheck(res.originalIP, cfRanges);
+
+        if (!proxiedByCF) {
+            console.log(`Non-CF ip tried to connect: ${res.originalIP}`);
+            console.log(req.headers);
+
+            return send(res, 406, 'You are not allowed to directly connect to this deployment.');
+        }
+
+        // @TODO add a else condition that checks if the Host header corresponds with the alias/main domain
+    }
 
     await initializeSecretary(options.secretManager);
 
@@ -178,6 +197,7 @@ export interface UserInterface {
 
 export interface Response extends ServerResponse {
     clientIP: string;
+    originalIP: string;
     gateway: Pushgateway;
     metricNamespace: string;
     route: string;
