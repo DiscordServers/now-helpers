@@ -1,3 +1,15 @@
+# [2.2.0](https://github.com/DiscordServers/now-helpers/compare/v2.1.1...v2.2.0) (2019-06-25)
+
+
+### Bug Fixes
+
+* **typescript:** Added dist to exclude ([6276b11](https://github.com/DiscordServers/now-helpers/commit/6276b11))
+
+
+### Features
+
+* **initializing:** Add optional cloudflare check ([0269c48](https://github.com/DiscordServers/now-helpers/commit/0269c48))
+
 ## [2.1.1](https://github.com/DiscordServers/now-helpers/compare/v2.1.0...v2.1.1) (2019-06-21)
 
 
