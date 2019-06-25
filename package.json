@@ -5,7 +5,7 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "publish-dev": "rm dist/* && npm run build && npm publish . --tag dev",
-        "build": "tsc --project tsconfig.json && ts-node tools/after-build.ts",
+        "build": "mkdir dist && ts-node tools/after-build.ts && tsc --project tsconfig.json",
         "lint": "tslint --config tslint.json --project tsconfig.json"
     },
     "publishConfig": {
