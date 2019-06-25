@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/DiscordServers/now-helpers/compare/v2.2.0...v2.2.1) (2019-06-25)
+
+
+### Bug Fixes
+
+* **build:** Create dist folder before build ([e6ce9d1](https://github.com/DiscordServers/now-helpers/commit/e6ce9d1))
+
 # [2.2.0](https://github.com/DiscordServers/now-helpers/compare/v2.1.1...v2.2.0) (2019-06-25)
 
 
