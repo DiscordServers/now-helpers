@@ -9,11 +9,13 @@ import redirect from 'micro-redirect';
 import {Pushgateway} from 'prom-client';
 import { getClientIp } from 'request-ip';
 import rp from 'request-promise';
-import cfRanges from './cf-ranges.json';
 import cors from './cors';
 import getSecret, {initialize as initializeSecretary, Secret} from './getSecret';
 import prometheus from './prometheus';
 import Timer from './Timer';
+
+// @ts-ignore
+import cfRanges from './cf-ranges.json';
 
 export interface Options {
     route: string;
