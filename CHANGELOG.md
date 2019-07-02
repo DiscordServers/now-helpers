@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/DiscordServers/now-helpers/compare/v2.2.2...v2.2.3) (2019-07-02)
+
+
+### Bug Fixes
+
+* **cors:** Make origin a wildcard ([b814fc1](https://github.com/DiscordServers/now-helpers/commit/b814fc1))
+
 ## [2.2.2](https://github.com/DiscordServers/now-helpers/compare/v2.2.1...v2.2.2) (2019-06-25)
 
 
