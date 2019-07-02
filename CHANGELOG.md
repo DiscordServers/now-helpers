@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/DiscordServers/now-helpers/compare/v2.2.1...v2.2.2) (2019-06-25)
+
+
+### Bug Fixes
+
+* **build:** Put ignore on range import ([25e0e55](https://github.com/DiscordServers/now-helpers/commit/25e0e55))
+
 ## [2.2.1](https://github.com/DiscordServers/now-helpers/compare/v2.2.0...v2.2.1) (2019-06-25)
 
 
