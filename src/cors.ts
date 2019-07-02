@@ -21,7 +21,7 @@ const ALLOW_HEADERS = [
 ];
 
 export default (handler: RequestHandler) => (req: IncomingMessage, res: ServerResponse) => {
-    res.setHeader('Access-Control-Allow-Origin', req.headers.origin || 'https://discordservers.com');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
 
     if (req.method === 'OPTIONS') {
